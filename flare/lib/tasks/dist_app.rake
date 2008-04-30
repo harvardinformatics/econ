@@ -18,7 +18,7 @@ task(:dist_app) do
     FileUtils.mkdir("#{dist_dir}")
   end
   
-  cmd = "svn export #{app_dir} #{dist_app_dir} && tar -C /home/maureen/econ/trunk/flare/dist -czf #{tgz_file} app/"
+  cmd = "svn export #{app_dir} #{dist_app_dir} && tar -C #{dist_dir} -czf #{tgz_file} app/"
   puts cmd
   result = system(cmd)
   raise("tar failed.. msg: #{$?}") unless result

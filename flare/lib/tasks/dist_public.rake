@@ -18,7 +18,7 @@ task(:dist_public) do
     FileUtils.mkdir("#{dist_dir}")
   end
   
-  cmd = "svn export #{public_dir} #{dist_public_dir} && tar -C /home/maureen/econ/trunk/flare/dist -czf #{tgz_file} public/"
+  cmd = "svn export #{public_dir} #{dist_public_dir} && tar -C #{dist_dir} -czf #{tgz_file} public/"
   puts cmd
   result = system(cmd)
   raise("tar failed.. msg: #{$?}") unless result
