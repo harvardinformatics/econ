@@ -72,11 +72,10 @@ mapping = {
   "SpecificEpithet" => "species_text",
   "Collection" => "collection_facet",
   "Collector" => "collector_text",
-  "CollectionDate" => "collection_date_text",
+  "CollectionDate" => "coll_date_text",
   "Country" => "country_facet",
   "State" => "state_facet",
   "Locality" => "locality_text",
-  "Classification" => "classification_facet",
   "ClassificationOfMaterial" => "material_facet",
   "IsProcessed" => "is_processed_facet",
   "SpecimenFormat" => "specimen_format_facet",
@@ -88,7 +87,15 @@ mapping = {
   "TDWG_Level2" => "tdwg2_facet",
 }
 
+count = 0
+omits = 0
+
+puts "importing records..."
+
 FasterCSV.foreach(econ_filename, :headers=>true) do |row|
+  if (count += 1) % 1000 == 0
+  then puts "#{count}..."
+  end
 
   doc = {}
   row.each do |heading, value|
@@ -110,10 +117,10 @@ FasterCSV.foreach(econ_filename, :headers=>true) do |row|
   end
 
   #puts doc.inspect if debug and !filter(doc)
-  puts doc['collection_date_text'] if doc['collection_date_text'] and !filter(doc) and debug
 
   if (filter(doc) and !debug)
   then solr.add doc 
+  else omits += 1
   end
   
 end
@@ -121,3 +128,5 @@ end
 solr.commit unless debug
 solr.optimize unless debug
 
+puts "processed #{count} records"
+puts "omitted #{omits} records"
