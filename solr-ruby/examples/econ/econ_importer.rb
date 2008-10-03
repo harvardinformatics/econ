@@ -54,9 +54,9 @@ def filter(doc)
   then return false
   end
 
-  collection_date_text = doc['collection_date_text']
+  coll_date_text = doc['coll_date_text']
 
-  if (collection_date_text =~ /\b(\d{4})\b/) and ($1.to_i >= 1970)
+  if (coll_date_text =~ /\b(\d{4})\b/) and ($1.to_i >= 1970)
   then return false
   end
 
