@@ -1,8 +1,8 @@
 <tr valign="top">
   <td>
     <table class="entry">
-      <% @doc.each do |k,v|; highlighting = @response.highlighted(@doc['id'], k) %>
-      <tr><td class="field"><%=k%>:</td><td><%= highlighting ? "#{highlighting}" : (v.respond_to?('join') ? v.join(',') : v.to_s)%></td></tr>
+      <% (@doc.keys.sort{|a,b| @econ_sort_hash[a] <=> @econ_sort_hash[b]}).each do |k|; highlighting = @response.highlighted(@doc['id'], k) %>
+      <tr><td class="field"><%=@econ_doc_label[k] or k%>:</td><td><%= highlighting ? "...#{highlighting}..." : (@doc[k].respond_to?('join') ? @doc[k].join(',') : @doc[k].to_s)%></td></tr>
       <% end %>
     </table>
   </td>
