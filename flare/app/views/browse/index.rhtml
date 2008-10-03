@@ -1,79 +1,93 @@
-<div id="sidebar"><div class="boxContent">
-	<div class="searchbar">
-  <% form_tag(:action=>'add_query') do %>
-    <%= text_field_with_auto_complete :search, :query %>
-    <%=submit_tag "search"%>
-  <% end %>
-	</div>
-<!-- <h2>browse facets</h2> -->
+      <div id="nav2">
+        <div class="boxContent">
+          <div class="searchbar">
+            <% form_tag(:action=>'add_query') do %>
+            <%= text_field_with_auto_complete :search, :query %>
+            <%=submit_tag "search"%>
+            <% end %>
+          </div>
+        </div>
+        &nbsp;
+      </div>
+    </div>
 
-<% @facet_fields.each do |field|%>
-  <h4> 
-<%=h field%> <%=link_to "[browse]", :action => 'facet', :field_name => field%> 
-<!-- <%=link_to field, :action => 'facet', :field_name => field%> -->
-</h4> 
+    <div id="sidenav">
 
+    <!-- <h2>browse facets</h2> -->
 
-  <ul>
-  <% @response.field_facets(field).each do |f| %>
-    <li>
-      <%= image_tag "pie_#{(f.value * 100.0 / @response.total_hits).ceil}.png"%>
-      <%= link_to "#{f.name} (#{f.value})", :action => 'add_filter', :field_name=>field, :value=>f.name%>
-    </li>
-  <% end %>
-  </ul>
-<% end %>
-<span class="exhibit"><%=link_to image_tag("simile-exhibit.png"), :controller => :simile, :action => :exhibit %></span>
-</div></div> 
+    <% @facet_fields.each do |field|%>
+      <h4> 
+      <%=h @econ_facet_labels[field]%> <%=link_to "[browse]", :action => 'facet', :field_name => field%> 
+      <!-- <%=link_to field, :action => 'facet', :field_name => field%> -->
+      </h4> 
 
-<div id="variables">
-	<div class="clear">
-		<%=link_to '[clear constraints]', :action => 'clear'%>
-	</div>
-	
-<div>
-<span class="varheader">Queries:</span>
-	<div id="queries">
-<% session[:queries].each_with_index do |q,i| %>
-<%=link_to q[:negative] ? "-" : '+', :action => :invert_query, :index => i%>
-<span id="query_<%=i%>"><%=q[:query]%></span>
-<%= in_place_editor "query_#{i}", :url=> url_for(:action=>"update_query", :index=>i, :script=>true) %>
-<%=link_to image_tag("x-close.gif"), :action => :remove_query, :index => i %><br/>
-<% end %>
-	</div>
-</div>
+      <ul>
+      <% @response.field_facets(field).each do |f| %>
+        <li>
+        <%= image_tag "pie_#{(f.value * 100.0 / @response.total_hits).ceil}.png"%>
+        <%= link_to "#{f.name} (#{f.value})", :action => 'add_filter', :field_name=>field, :value=>f.name%>
+        </li>
+      <% end %>
+      </ul>
 
-<div>
-<span class="varheader">Filters:</span>
-	<div id="filters">
-<% session[:filters].each_with_index do |filter, i| %>
-      <%=link_to filter[:negative] ? "-" : "+", :action => :invert_filter, :index => i%>
-      <%=filter[:field]%>:<%=filter[:value]%>
-      <%=link_to image_tag("x-close.gif"), :action => :remove_filter, :index => i %><br/>
-<% end %>
-	</div>
-</div>
+    <% end %>
 
-<div class="clear">
-	<%=link_to '[clear constraints]', :action => 'clear'%>
-</div>
+    </div>
 
-</div>
+    <div id="main">
+      <div id="main_text">
+      <!-- <div id="variables"> -->
 
-<div class="resultsheader">Results <strong><%=@start + 1%>-<%=[@response.total_hits,@results_per_page + @start].min%></strong> of <strong><%=@response.total_hits%></strong></div>
+        <span class="varheader">Queries:</span> <br/><br/>
+        <!-- <div id="queries"> -->
 
-<div id="results"><table cellpadding="10">
-  <% @response.each do |doc| %>
-    <%= render_component :controller => DocumentController, :action => "result", :params => {:doc => doc, :response => @response} %>
-  <% end %>
-</table>
-</div>
+        <% session[:queries].each_with_index do |q,i| %>
+          <%=link_to q[:negative] ? "-" : '+', :action => :invert_query, :index => i%>
+          <span id="query_<%=i%>"><%=q[:query]%></span>
+          <%= in_place_editor "query_#{i}", :url=> url_for(:action=>"update_query", :index=>i, :script=>true) %>
+          <%=link_to image_tag("x-close.gif"), :action => :remove_query, :index => i %><br/>
+        <% end %>
+     
+        <!-- </div> -->
+      <!-- </div> -->
 
-<div class="resultsheader"><%=link_to_if session[:page] != 1,  "<<", :page => session[:page] - 1%> Results <strong><%=@start + 1%>-<%=[@response.total_hits,@results_per_page + @start].min%></strong> of <strong><%=@response.total_hits%></strong><%=link_to_if session[:page] < (@response.total_hits.to_f / @results_per_page).ceil, ">>", :page => session[:page] + 1%></div>
+      <!-- <div class="clear"> -->
+      <%=link_to '[clear constraints]', :action => 'clear'%>
 
+        <!-- </div> -->
+        <span class="varheader">Filters:</span> <br/>
+        <!-- <div id="filters"> -->
+        <% session[:filters].each_with_index do |filter, i| %>
+          <%=link_to filter[:negative] ? "-" : "+", :action => :invert_filter, :index => i%>
+          <%=filter[:field]%>:<%=filter[:value]%>
+          <%=link_to image_tag("x-close.gif"), :action => :remove_filter, :index => i %><br/>
+        <% end %>
+        <!-- </div> -->
 
+        <!-- <div class="clear"> -->
+        <%=link_to '[clear constraints]', :action => 'clear'%> <br/><br/>
+        <!-- </div> -->
 
+        <!-- <div class="resultsheader"> -->
+        Results <strong><%=@start + 1%>-<%=[@response.total_hits,@results_per_page + @start].min%></strong> of <strong><%=@response.total_hits%></strong>
+        <!-- </div> -->
 
-<!-- <h3>index info</h3><%=debug @info %>
+        <!-- <div id="results"> -->
+        <table cellpadding="10">
+        <% @response.each do |doc| %>
+          <%= render_component :controller => DocumentController, :action => "result", :params => {:doc => doc, :response => @response} %>
+        <% end %>
+        </table>
+        <!-- </div> -->
 
-<h3>search/facet response header</h3><%=debug @response.data['responseHeader']%> -->
+        <!-- <div class="resultsheader"> -->
+        <%=link_to_if session[:page] != 1,  "<<", :page => session[:page] - 1%> Results <strong><%=@start + 1%>-<%=[@response.total_hits,@results_per_page + @start].min%></strong> of <strong><%=@response.total_hits%></strong><%=link_to_if session[:page] < (@response.total_hits.to_f / @results_per_page).ceil, ">>", :page => session[:page] + 1%>
+        <!-- </div> -->
+
+     </div>
+   </div>
+ </div>
+
+ <!-- <h3>index info</h3><%=debug @info %>
+
+ <h3>search/facet response header</h3><%=debug @response.data['responseHeader']%> -->
