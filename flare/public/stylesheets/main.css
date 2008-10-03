@@ -412,9 +412,9 @@ padding: 10px 10px 10px 0px;
 	padding-top: 20px;
 	}
 	#main_text li {
-	font-size: 90%;
+	/* font-size: 90%; */
 	list-style: none;
-	line-height: 1.8em;
+	/* line-height: 1.8em; */
 	}
 	#main_text a {
 	font-size: 100%;
