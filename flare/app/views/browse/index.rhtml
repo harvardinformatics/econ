@@ -1,22 +1,21 @@
       <div id="nav2">
         <div class="boxContent">
-	  <br/>
-          <div class="searchbar">
-            <% form_tag(:action=>'add_query') do %>
-            <%= text_field_with_auto_complete :search, :query %>
-            <%=submit_tag "search"%>
-            <% end %>
-          </div>
-	  <br/>
+	  <table>
+	    <tr><td><h1>Economic Botany Collection</h1></td>
+                <td> <div class="searchbar">
+                     <% form_tag(:action=>'add_query') do %>
+                     <%= text_field_with_auto_complete :search, :query %>
+                     <%=submit_tag "search"%>
+                     <% end %>
+                     </div>
+                </td>
+             </tr>
+          </table>
         </div>
-        &nbsp;
       </div>
     </div>
 
     <div id="sidenav">
-
-    <!-- <h2>browse facets</h2> -->
-
     <% (@econ_facet_fields.sort{|a,b| @facet_sort_hash[a] <=> @facet_sort_hash[b]}).each do |field|%>
       <h4> 
       <%=h @econ_facet_labels[field]%> <%=link_to "[browse]", :action => 'facet', :field_name => field%> 
@@ -38,10 +37,10 @@
 
     <div id="main">
       <div id="main_text">
-      <!-- <div id="variables"> -->
+       <div id="variables"> 
 
-        <span class="varheader">Queries:</span> <br/><br/>
-        <!-- <div id="queries"> -->
+<!--        <span class="varheader">Queries:</span> <br/> -->
+         <div id="queries">
 
         <% session[:queries].each_with_index do |q,i| %>
           <%=link_to q[:negative] ? "-" : '+', :action => :invert_query, :index => i%>
@@ -50,41 +49,41 @@
           <%=link_to image_tag("x-close.gif"), :action => :remove_query, :index => i %><br/>
         <% end %>
      
-        <!-- </div> -->
-      <!-- </div> -->
+        </div>
+      </div>
 
-      <!-- <div class="clear"> -->
-      <%=link_to '[clear constraints]', :action => 'clear'%>
-
-        <!-- </div> -->
+<!--      <div class="clear">
+      <%=link_to '[clear constraints]', :action => 'clear'%><br/>
+      </div>
+-->
         <span class="varheader">Filters:</span> <br/>
-        <!-- <div id="filters"> -->
+        <div id="filters">
         <% session[:filters].each_with_index do |filter, i| %>
           <%=link_to filter[:negative] ? "-" : "+", :action => :invert_filter, :index => i%>
-          <%=filter[:field]%>:<%=filter[:value]%>
+          <%=@econ_doc_label[filter[:field]]%>:<%=filter[:value]%>&nbsp;
           <%=link_to image_tag("x-close.gif"), :action => :remove_filter, :index => i %><br/>
         <% end %>
-        <!-- </div> -->
+        </div>
 
-        <!-- <div class="clear"> -->
+        <div class="clear">
         <%=link_to '[clear constraints]', :action => 'clear'%> <br/><br/>
-        <!-- </div> -->
+        </div>
 
-        <!-- <div class="resultsheader"> -->
+        <div class="resultsheader">
         Results <strong><%=@start + 1%>-<%=[@response.total_hits,@results_per_page + @start].min%></strong> of <strong><%=@response.total_hits%></strong>
-        <!-- </div> -->
+        </div>
 
-        <!-- <div id="results"> -->
+        <div id="results">
         <table cellpadding="10">
         <% @response.each do |doc| %>
           <%= render_component :controller => DocumentController, :action => "result", :params => {:doc => doc, :response => @response} %>
         <% end %>
         </table>
-        <!-- </div> -->
+        </div>
 
-        <!-- <div class="resultsheader"> -->
-        <%=link_to_if session[:page] != 1,  "<<", :page => session[:page] - 1%> Results <strong><%=@start + 1%>-<%=[@response.total_hits,@results_per_page + @start].min%></strong> of <strong><%=@response.total_hits%></strong><%=link_to_if session[:page] < (@response.total_hits.to_f / @results_per_page).ceil, ">>", :page => session[:page] + 1%>
-        <!-- </div> -->
+        <div class="resultsheader">
+        <%=link_to_if session[:page] != 1,  "<<", :page => session[:page] - 1%> Results <strong><%=@start + 1%>-<%=[@response.total_hits,@results_per_page + @start].min%></strong> of <strong><%=@response.total_hits%></strong><%=link_to_if session[:page] < (@response.total_hits.to_f / @results_per_page).ceil, "&nbsp;>>", :page => session[:page] + 1%>
+        </div>
 
      </div>
    </div>

@@ -134,7 +134,12 @@
 	/* second navbar style begins */
 	#nav2 {
 	background: #336699;
+	}
 
+	#nav2 h1 {
+		color: white;
+		font-size: normal;
+		padding-left: 10px;
 	}
 
 	/* second navbar style ends */	
@@ -143,8 +148,8 @@
 /* sidenav style begins */
 	#sidenav {
 	color: #89201b;
-	margin: 0px 30px 0px 0px;
-	padding: 30px 0px 20px 5px;
+	margin: 0px 10px 0px 0px;
+	padding: 10px 10px 10px 10px;
 	float: left;
 	width: 220px;
 	background: #b8c0d2;
@@ -395,7 +400,7 @@ padding: 10px 10px 10px 0px;
 	#main_text {
 	background: #ddeedd;
 	margin: 0px;
-	padding: 0px;
+	padding-top: 10px;
 	padding-left: 35px;
 	padding-right: 35px;
 	margin-left: 225px;
@@ -424,7 +429,7 @@ padding: 10px 10px 10px 0px;
 	text-align: left;
 	color: #336633;
 	margin: 0px;
-	padding: 10px 10px 10px 0px;
+	padding: 10px 10px 0px 0px;
 	}
 	h2 {
 	padding: 0px;
@@ -485,9 +490,7 @@ padding: 10px 10px 10px 0px;
     clear: left;
     }
 /* main text styles end */
-	#allcontent .clear {
-	clear: both;
-	}
+
 /* footer styles begin */
 	#footer {
 	color: white; 
@@ -552,7 +555,7 @@ table.entry { /* div.entity */
 }
 td { /* and td.val */
 	font:normal 1.0em Verdana, Arial, Helvetica, Sans-serif;		
-	width: 80%;
+	/*width: 80%;*/
 }
 td.header {
 	font-style: bold;

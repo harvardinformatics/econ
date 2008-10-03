@@ -43,6 +43,30 @@ class BrowseController < ApplicationController
       "tdwg2_facet" => "TDWG Level 2",
     }
 
+    @econ_doc_label = {
+      "id" => "Record",
+      "barcode_text" => "Barcode",
+      "coll_id_text" => "Collection Identifier",
+      "family_facet" => "Family",
+      "genus_text" => "Genus",
+      "species_text" => "Specific Epithet",
+      "collection_facet" => "Collection",
+      "collector_text" => "Collector",
+      "coll_date_text" => "Collection Date",
+      "country_facet" => "Country",
+      "state_facet" => "State",
+      "locality_text" => "Locality",
+      "material_facet" => "Classification of Material",
+      "is_processed_facet" => "Is Processed?",
+      "specimen_format_facet" => "Specimen Format",
+      "description_text" => "Description",
+      "plant_part_text" => "Plant Part",
+      "notes_text" => "Notes on Usage",
+      "comment_text" => "General Comments",
+      "tdwg1_facet" => "TDWG Level 1",
+      "tdwg2_facet" => "TDWG Level 2",
+    }
+
     @text_fields = @info.field_names.find_all {|v| v =~ /_text$/}
     
     session[:page] = params[:page].to_i if params[:page]
