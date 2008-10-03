@@ -134,41 +134,9 @@
 	/* second navbar style begins */
 	#nav2 {
 	background: #336699;
-	color: white;
+
 	}
-	#nav2 ul {
-	text-align: left;
-	font-size: 1em;
-	list-style: none;
-	margin: 0px 0px 0px 200px;
-	padding: 5px;
-	}
-	#nav2 li {
-	display: inline;
-	text-align: center;
-	padding: 0px 5px;
-	margin: 0px;
-	}
-	#nav2 a {
-	color: white;
-	text-decoration: none;
-	margin: 0px;
-	padding: 5px 10px;
-	}	
-	#nav2 a.active {
-	background-color: #b8c0d2;
-	color: black;
-	text-decoration: none;
-	margin: 0px;
-	padding: 5px 10px;
-	}
-	#nav2 a:hover {
-	background-color: #b8c0d2;
-	color: black;
-	text-decoration: none;
-	margin: 0px;
-	padding: 5px 10px;
-	}
+
 	/* second navbar style ends */	
 /* header styles ends */
 	

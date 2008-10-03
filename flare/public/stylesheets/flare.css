@@ -1,10 +1,6 @@
 
 .searchbar {
-	line-height: 12px;
+	float: right;
+	padding-right: 10px;
 }
 
-div.auto_complete {
-	padding-left: 20px;
-	padding-top: 10px;
-	background: #fff;
-}

@@ -1,11 +1,13 @@
       <div id="nav2">
         <div class="boxContent">
+	  <br/>
           <div class="searchbar">
             <% form_tag(:action=>'add_query') do %>
             <%= text_field_with_auto_complete :search, :query %>
             <%=submit_tag "search"%>
             <% end %>
           </div>
+	  <br/>
         </div>
         &nbsp;
       </div>
