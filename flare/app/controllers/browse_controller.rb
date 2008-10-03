@@ -13,10 +13,42 @@ class BrowseController < ApplicationController
   #   f.facet_fields = []
   # end
   
+
   def index
     # TODO Add paging and sorting
     @info = solr(Solr::Request::IndexInfo.new) # TODO move this call to only have it called when the index may have changed
     @facet_fields = @info.field_names.find_all {|v| v =~ /_facet$/}
+
+    facet_sort_hash = {
+      "family_facet" => 1,
+      "collection_facet=" => 2,
+      "country_facet" => 3,
+      "state_facet" => 4,
+      "classification_facet" => 5,
+      "material_facet" => 6,
+      "is_processed_facet" => 7,
+      "specimen_format_facet" => 8,
+      "tdwg1_facet" => 9,
+      "tdwg2_facet" => 10,
+    }
+
+    #@facet_fields = @facet_fields.sort { |a,b| facet_sort_hash[a] <=> facet_sort_hash[b] }
+
+    @econ_facet_labels = {
+      "family_facet" => "Family",
+      "collection_facet=" => "Collection",
+      "country_facet" => "Country",
+      "state_facet" => "State",
+      "classification_facet" => "Classification",
+      "material_facet" => "Material",
+      "is_processed_facet" => "Is Processed?",
+      "specimen_format_facet" => "Specimen Format",
+      "tdwg1_facet" => "TDWG Level 1",
+      "tdwg2_facet" => "TDWG Level 2",
+    }
+
+
+
     @text_fields = @info.field_names.find_all {|v| v =~ /_text$/}
     
     session[:page] = params[:page].to_i if params[:page]
@@ -32,7 +64,7 @@ class BrowseController < ApplicationController
                                           :start => @start,
                                           :facets => {:fields => @facet_fields, :limit => 20 , :mincount => 1, :sort => :count, :debug_query=>true},
                                           :highlighting => {:field_list => @text_fields})
-    logger.info({:query => query, :filter_queries => filters}.inspect)
+    # logger.info({:query => query, :filter_queries => filters}.inspect)
     @response = solr(request)
     
     #TODO: call response.field_facets(??) - maybe field_facets should be return a higher level? 
@@ -56,7 +88,7 @@ class BrowseController < ApplicationController
   end
   
   def update_query
-    logger.debug "update_query: #{params.inspect}"
+    # logger.debug "update_query: #{params.inspect}"
     session[:queries][params[:index].to_i][:query] = params[:value]
     session[:page] = 1
     render :update do |page|
