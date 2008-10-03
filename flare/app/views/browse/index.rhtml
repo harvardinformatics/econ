@@ -15,7 +15,7 @@
 
     <!-- <h2>browse facets</h2> -->
 
-    <% @facet_fields.each do |field|%>
+    <% (@econ_facet_fields.sort{|a,b| @facet_sort_hash[a] <=> @facet_sort_hash[b]}).each do |field|%>
       <h4> 
       <%=h @econ_facet_labels[field]%> <%=link_to "[browse]", :action => 'facet', :field_name => field%> 
       <!-- <%=link_to field, :action => 'facet', :field_name => field%> -->
