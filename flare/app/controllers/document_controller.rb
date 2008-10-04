@@ -17,7 +17,7 @@ class DocumentController < ApplicationController
     @doc = params[:doc]
     @response = params[:response]  # TODO: FlareContext?
 
-    @econ_doc_label = {
+    @econ_doc_label = { # this is in browse_controller.rb too, until I understand Rails scoping...
       "id" => "Record",
       "barcode_text" => "Barcode",
       "coll_id_text" => "Collection Identifier",

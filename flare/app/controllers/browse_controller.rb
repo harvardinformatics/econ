@@ -43,7 +43,7 @@ class BrowseController < ApplicationController
       "tdwg2_facet" => "TDWG Level 2",
     }
 
-    @econ_doc_label = {
+    @econ_doc_label = { # this is in document_controller.rb too, until I understand Rails scoping...
       "id" => "Record",
       "barcode_text" => "Barcode",
       "coll_id_text" => "Collection Identifier",
@@ -69,45 +69,55 @@ class BrowseController < ApplicationController
 
     @text_fields = @info.field_names.find_all {|v| v =~ /_text$/}
     
-    session[:page] = params[:page].to_i if params[:page]
+    session[:page] = sanitize(params[:page]).to_i if sanitize(params[:page])
     session[:page] = 1 if session[:page] <= 0
         
     @results_per_page = 25
     
     @start = (session[:page] - 1) * @results_per_page
-    
-    request = Solr::Request::Standard.new(:query => query,
-                                          :filter_queries => filters,
-                                          :rows => @results_per_page,
-                                          :start => @start,
-                                          :facets => {:fields => @econ_facet_fields, :limit => 20 , :mincount => 1, :sort => :count, :debug_query=>true},
-                                          :highlighting => {:field_list => @text_fields})
-    # logger.info({:query => query, :filter_queries => filters}.inspect)
-    @response = solr(request)
-    
+
+    if (query and query.length > 0)
+    then
+      request = Solr::Request::Standard.new(:query => query,
+                                            :filter_queries => filters,
+                                            :rows => @results_per_page,
+                                            :start => @start,
+                                            :facets => {:fields => @econ_facet_fields, :limit => 20 , :mincount => 1, :sort => :count, :debug_query=>true},
+                                            :highlighting => {:field_list => @text_fields})
+      # logger.info({:query => query, :filter_queries => filters}.inspect)
+      @response = solr(request)
+    end
+
     #TODO: call response.field_facets(??) - maybe field_facets should be return a higher level? 
   end
   
   def facet
-    @facets = retrieve_field_facets(params[:field_name])
+    @facets = retrieve_field_facets(sanitize(params[:field_name]))
   end
   
   def auto_complete_for_search_query
     # TODO instead of "text", default to the default search field configured in schema.xml
-    @values = retrieve_field_facets("text", 5, params['search']['query'].downcase)
+    @values = retrieve_field_facets("text", 5, sanitize(params['search']['query']).downcase)
     
     render :partial => 'suggest'
   end
 
   def add_query
-    session[:queries] << {:query => params[:search][:query]}
+    query = sanitize(params[:search][:query])
+    query ||= ""
+
+    if query.strip.length > 0
+    then
+    session[:queries] << {:query => query}
     session[:page] = 1
+    end
+
     redirect_to :action => 'index'
   end
   
   def update_query
     # logger.debug "update_query: #{params.inspect}"
-    session[:queries][params[:index].to_i][:query] = params[:value]
+    session[:queries][sanitize(params[:index]).to_i][:query] = sanitize(params[:value])
     session[:page] = 1
     render :update do |page|
       page.redirect_to '/browse'
@@ -115,33 +125,33 @@ class BrowseController < ApplicationController
   end
 
   def invert_query
-    q = session[:queries][params[:index].to_i]
+    q = session[:queries][sanitize(params[:index]).to_i]
     q[:negative] = !q[:negative]
     session[:page] = 1
     redirect_to :action => 'index'
   end
 
   def remove_query
-    session[:queries].delete_at(params[:index].to_i)
+    session[:queries].delete_at(sanitize(params[:index]).to_i)
     session[:page] = 1
     redirect_to :action => 'index'
   end
 
   def invert_filter
-    f = session[:filters][params[:index].to_i]
+    f = session[:filters][sanitize(params[:index]).to_i]
     f[:negative] = !f[:negative]
     session[:page] = 1
     redirect_to :action => 'index'
   end
   
   def remove_filter
-    session[:filters].delete_at(params[:index].to_i)
+    session[:filters].delete_at(sanitize(params[:index]).to_i)
     session[:page] = 1
     redirect_to :action => 'index'
   end
   
   def add_filter
-    session[:filters] << {:field => params[:field_name], :value => params[:value], :negative => (params[:negative] ? true : false)} 
+    session[:filters] << {:field => sanitize(params[:field_name]), :value => sanitize(params[:value]), :negative => (params[:negative] ? true : false)} 
     session[:page] = 1
     redirect_to :action => 'index'
   end
@@ -173,6 +183,17 @@ class BrowseController < ApplicationController
     results = SOLR.send(req)
     
     results.field_facets(field)
+  end
+
+  def sanitize(string)
+    if string
+    then
+    string = string.gsub('&', ' and ')
+    string = string.gsub(/\W/, ' ')
+    string = string.gsub(/\s+/, ' ')
+    end
+
+    string
   end
   
 end
