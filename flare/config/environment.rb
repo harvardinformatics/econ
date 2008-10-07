@@ -68,6 +68,9 @@ solr_environments = {
   :development => {
   },
 
+  :production => {
+  },
+  
   :delicious => {
 #    :image_url => Proc.new {|d| "http://images.amazon.com/images/P/#{d[:asin_text]}.01.MZZZZZZZ"},
     :timeline_dates => :published_year_facet
