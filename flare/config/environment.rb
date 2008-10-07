@@ -91,5 +91,5 @@ solr_environments = {
 SOLR_ENV = ENV["SOLR_ENV"] || "development"
 SOLR_CONFIG = solr_environments[SOLR_ENV.to_sym]
 puts "#{SOLR_ENV}: SOLR_CONFIG = #{SOLR_CONFIG.inspect}"
-solr_url = SOLR_CONFIG[:solr_url] || "http://localhost:8080/solr"
+solr_url = SOLR_CONFIG[:solr_url] || "http://localhost:8080/solr-dev"
 SOLR = Solr::Connection.new(solr_url)
