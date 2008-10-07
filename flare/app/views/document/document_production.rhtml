@@ -1,0 +1,10 @@
+<tr valign="top">
+  <td>
+    <table class="entry">
+      <% @doc.delete("score") %>
+      <% (@doc.keys.sort{|a,b| @econ_sort_hash[a] <=> @econ_sort_hash[b]}).each do |k|; highlighting = @response.highlighted(@doc['id'], k) %>
+      <tr><td class="field"><%=@econ_doc_label[k] or k%>:</td><td><%= highlighting ? "...#{highlighting}..." : (@doc[k].respond_to?('join') ? @doc[k].join(',') : @doc[k].to_s)%></td></tr>
+      <% end %>
+    </table>
+  </td>
+</tr>
