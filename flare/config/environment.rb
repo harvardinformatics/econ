@@ -5,7 +5,7 @@
 # ENV['RAILS_ENV'] ||= 'production'
 
 # Specifies gem version of Rails to use when vendor/rails is not present
-RAILS_GEM_VERSION = '1.2.3' unless defined? RAILS_GEM_VERSION
+RAILS_GEM_VERSION = '1.2.6' unless defined? RAILS_GEM_VERSION
 RAILS_DEFAULT_LOGGER.level = Logger::WARN if defined? RAILS_DEFAULT_LOGGER
 
 # Bootstrap the Rails environment, frameworks, and default configuration
@@ -25,8 +25,8 @@ Rails::Initializer.run do |config|
 
   # Force all environments to use the same logger level 
   # (by default production uses :info, the others :debug)
-  # config.log_level = :debug
-  config.log_level = :warn
+  config.log_level = :debug
+  # config.log_level = :warn
 
   # Use the database for sessions instead of the file system
   # (create the session table with 'rake db:sessions:create')
@@ -64,6 +64,9 @@ solr_environments = {
   # facets: default, all *_facet fields are considered facet fields
   # title: default, :title_text is title field
   # timeline: default, no timeline support without knowing the field(s) to use
+  :econ => {
+    :solr_url => "http://solr:8080/solr"
+  },
   
   :development => {
   },
@@ -91,5 +94,5 @@ solr_environments = {
 SOLR_ENV = ENV["SOLR_ENV"] || "development"
 SOLR_CONFIG = solr_environments[SOLR_ENV.to_sym]
 puts "#{SOLR_ENV}: SOLR_CONFIG = #{SOLR_CONFIG.inspect}"
-solr_url = SOLR_CONFIG[:solr_url] || "http://localhost:8080/solr-dev"
+solr_url = SOLR_CONFIG[:solr_url] || "http://solr:8080/solr"
 SOLR = Solr::Connection.new(solr_url)

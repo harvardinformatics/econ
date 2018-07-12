@@ -40,7 +40,7 @@ private
   end
   
   def solr(request)
-    logger.info "---\n#{request.inspect}\n---"
+    puts "---\n#{request.to_s}\n---"
     SOLR.send(request)  
   end
 
